@@ -1,0 +1,80 @@
+substitutions:
+  device_name: apple-tree
+  friendly_name: Apple Tree
+
+esphome:
+  name: ${device_name}
+  friendly_name: ${friendly_name}
+
+esp32:
+  board: esp32-c3-devkitm-1
+  framework:
+    type: arduino
+
+<<: !include ../common/base.yaml
+
+deep_sleep:
+  id: deep_sleep_ctrl
+  run_duration: 30s
+  sleep_duration: 15min
+
+sensor:
+  - platform: adc
+    pin: GPIO1
+    name: "${friendly_name} Zone 1 Moisture"
+    id: moisture_zone_1
+    attenuation: 12db
+    update_interval: 10s
+    filters:
+      - median:
+          window_size: 5
+          send_every: 5
+      - calibrate_linear:
+          # Calibrate with your sensor: raw voltage in air (dry) and submerged (wet)
+          - 2.80 -> 0.0
+          - 1.50 -> 100.0
+      - clamp:
+          min_value: 0.0
+          max_value: 100.0
+    unit_of_measurement: "%"
+    accuracy_decimals: 1
+    device_class: moisture
+    state_class: measurement
+
+  - platform: adc
+    pin: GPIO2
+    name: "${friendly_name} Zone 2 Moisture"
+    id: moisture_zone_2
+    attenuation: 12db
+    update_interval: 10s
+    filters:
+      - median:
+          window_size: 5
+          send_every: 5
+      - calibrate_linear:
+          - 2.80 -> 0.0
+          - 1.50 -> 100.0
+      - clamp:
+          min_value: 0.0
+          max_value: 100.0
+    unit_of_measurement: "%"
+    accuracy_decimals: 1
+    device_class: moisture
+    state_class: measurement
+
+  # Battery voltage via 1:1 voltage divider (2× 100kΩ) bringing 4.2V → 2.1V
+  - platform: adc
+    pin: GPIO3
+    name: "${friendly_name} Battery Voltage"
+    attenuation: 12db
+    update_interval: 10s
+    filters:
+      - multiply: 2.0
+      - median:
+          window_size: 3
+          send_every: 3
+    unit_of_measurement: "V"
+    accuracy_decimals: 2
+    device_class: voltage
+    state_class: measurement
+    entity_category: diagnostic

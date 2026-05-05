@@ -1,0 +1,116 @@
+substitutions:
+  device_name: raised-bed
+  friendly_name: Raised Garden Bed
+
+esphome:
+  name: ${device_name}
+  friendly_name: ${friendly_name}
+
+esp32:
+  board: esp32s3box
+  framework:
+    type: arduino
+
+<<: !include ../common/base.yaml
+
+# Mains or large battery powered — no deep sleep needed
+sensor:
+  - platform: adc
+    pin: GPIO1
+    name: "${friendly_name} Blueberries Moisture"
+    attenuation: 12db
+    update_interval: 60s
+    filters:
+      - median:
+          window_size: 5
+          send_every: 5
+      - calibrate_linear:
+          - 2.80 -> 0.0
+          - 1.50 -> 100.0
+      - clamp:
+          min_value: 0.0
+          max_value: 100.0
+    unit_of_measurement: "%"
+    accuracy_decimals: 1
+    device_class: moisture
+    state_class: measurement
+
+  - platform: adc
+    pin: GPIO2
+    name: "${friendly_name} Carrots Moisture"
+    attenuation: 12db
+    update_interval: 60s
+    filters:
+      - median:
+          window_size: 5
+          send_every: 5
+      - calibrate_linear:
+          - 2.80 -> 0.0
+          - 1.50 -> 100.0
+      - clamp:
+          min_value: 0.0
+          max_value: 100.0
+    unit_of_measurement: "%"
+    accuracy_decimals: 1
+    device_class: moisture
+    state_class: measurement
+
+  - platform: adc
+    pin: GPIO3
+    name: "${friendly_name} Peppers Moisture"
+    attenuation: 12db
+    update_interval: 60s
+    filters:
+      - median:
+          window_size: 5
+          send_every: 5
+      - calibrate_linear:
+          - 2.80 -> 0.0
+          - 1.50 -> 100.0
+      - clamp:
+          min_value: 0.0
+          max_value: 100.0
+    unit_of_measurement: "%"
+    accuracy_decimals: 1
+    device_class: moisture
+    state_class: measurement
+
+  - platform: adc
+    pin: GPIO4
+    name: "${friendly_name} Basil Moisture"
+    attenuation: 12db
+    update_interval: 60s
+    filters:
+      - median:
+          window_size: 5
+          send_every: 5
+      - calibrate_linear:
+          - 2.80 -> 0.0
+          - 1.50 -> 100.0
+      - clamp:
+          min_value: 0.0
+          max_value: 100.0
+    unit_of_measurement: "%"
+    accuracy_decimals: 1
+    device_class: moisture
+    state_class: measurement
+
+  - platform: adc
+    pin: GPIO5
+    name: "${friendly_name} Zucchini Moisture"
+    attenuation: 12db
+    update_interval: 60s
+    filters:
+      - median:
+          window_size: 5
+          send_every: 5
+      - calibrate_linear:
+          - 2.80 -> 0.0
+          - 1.50 -> 100.0
+      - clamp:
+          min_value: 0.0
+          max_value: 100.0
+    unit_of_measurement: "%"
+    accuracy_decimals: 1
+    device_class: moisture
+    state_class: measurement

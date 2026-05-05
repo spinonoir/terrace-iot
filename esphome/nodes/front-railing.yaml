@@ -1,0 +1,210 @@
+substitutions:
+  device_name: front-railing
+  friendly_name: Front Railing
+
+esphome:
+  name: ${device_name}
+  friendly_name: ${friendly_name}
+  includes:
+    - mux_reader.h
+
+esp32:
+  board: esp32s3box
+  framework:
+    type: arduino
+
+<<: !include ../common/base.yaml
+
+# CD74HC4067 16-channel analog multiplexer wiring:
+#   S0 → GPIO11
+#   S1 → GPIO12
+#   S2 → GPIO13
+#   S3 → GPIO14
+#   EN (active low) → GND (always enabled)
+#   SIG/AOUT → GPIO1 (ADC1_CH0)
+#   VCC → 3.3V, GND → GND
+
+output:
+  - platform: gpio
+    pin: GPIO11
+    id: mux_s0
+  - platform: gpio
+    pin: GPIO12
+    id: mux_s1
+  - platform: gpio
+    pin: GPIO13
+    id: mux_s2
+  - platform: gpio
+    pin: GPIO14
+    id: mux_s3
+
+# Each template sensor selects its multiplexer channel, waits briefly,
+# then reads the shared ADC pin. Readings are staggered by update_interval offset.
+
+sensor:
+  - platform: adc
+    pin: GPIO1
+    id: mux_adc
+    internal: true
+    attenuation: 12db
+    update_interval: never
+
+  - platform: template
+    name: "${friendly_name} Tall Bougainvillea A Moisture"
+    id: ch0_moisture
+    update_interval: 5min
+    lambda: |-
+      id(mux_s0).turn_off(); id(mux_s1).turn_off();
+      id(mux_s2).turn_off(); id(mux_s3).turn_off();
+      delay(10);
+      float raw = id(mux_adc).sample();
+      float pct = (2.80f - raw) / (2.80f - 1.50f) * 100.0f;
+      return clamp(pct, 0.0f, 100.0f);
+    unit_of_measurement: "%"
+    accuracy_decimals: 1
+    device_class: moisture
+    state_class: measurement
+
+  - platform: template
+    name: "${friendly_name} Tall Bougainvillea B Moisture"
+    id: ch1_moisture
+    update_interval: 5min
+    lambda: |-
+      id(mux_s0).turn_on(); id(mux_s1).turn_off();
+      id(mux_s2).turn_off(); id(mux_s3).turn_off();
+      delay(10);
+      float raw = id(mux_adc).sample();
+      float pct = (2.80f - raw) / (2.80f - 1.50f) * 100.0f;
+      return clamp(pct, 0.0f, 100.0f);
+    unit_of_measurement: "%"
+    accuracy_decimals: 1
+    device_class: moisture
+    state_class: measurement
+
+  - platform: template
+    name: "${friendly_name} Wide Jasmine A1 Moisture"
+    id: ch2_moisture
+    update_interval: 5min
+    lambda: |-
+      id(mux_s0).turn_off(); id(mux_s1).turn_on();
+      id(mux_s2).turn_off(); id(mux_s3).turn_off();
+      delay(10);
+      float raw = id(mux_adc).sample();
+      float pct = (2.80f - raw) / (2.80f - 1.50f) * 100.0f;
+      return clamp(pct, 0.0f, 100.0f);
+    unit_of_measurement: "%"
+    accuracy_decimals: 1
+    device_class: moisture
+    state_class: measurement
+
+  - platform: template
+    name: "${friendly_name} Wide Jasmine A2 Moisture"
+    id: ch3_moisture
+    update_interval: 5min
+    lambda: |-
+      id(mux_s0).turn_on(); id(mux_s1).turn_on();
+      id(mux_s2).turn_off(); id(mux_s3).turn_off();
+      delay(10);
+      float raw = id(mux_adc).sample();
+      float pct = (2.80f - raw) / (2.80f - 1.50f) * 100.0f;
+      return clamp(pct, 0.0f, 100.0f);
+    unit_of_measurement: "%"
+    accuracy_decimals: 1
+    device_class: moisture
+    state_class: measurement
+
+  - platform: template
+    name: "${friendly_name} Wide Jasmine B1 Moisture"
+    id: ch4_moisture
+    update_interval: 5min
+    lambda: |-
+      id(mux_s0).turn_off(); id(mux_s1).turn_off();
+      id(mux_s2).turn_on(); id(mux_s3).turn_off();
+      delay(10);
+      float raw = id(mux_adc).sample();
+      float pct = (2.80f - raw) / (2.80f - 1.50f) * 100.0f;
+      return clamp(pct, 0.0f, 100.0f);
+    unit_of_measurement: "%"
+    accuracy_decimals: 1
+    device_class: moisture
+    state_class: measurement
+
+  - platform: template
+    name: "${friendly_name} Wide Jasmine B2 Moisture"
+    id: ch5_moisture
+    update_interval: 5min
+    lambda: |-
+      id(mux_s0).turn_on(); id(mux_s1).turn_off();
+      id(mux_s2).turn_on(); id(mux_s3).turn_off();
+      delay(10);
+      float raw = id(mux_adc).sample();
+      float pct = (2.80f - raw) / (2.80f - 1.50f) * 100.0f;
+      return clamp(pct, 0.0f, 100.0f);
+    unit_of_measurement: "%"
+    accuracy_decimals: 1
+    device_class: moisture
+    state_class: measurement
+
+  - platform: template
+    name: "${friendly_name} Wide Bougainvillea A Moisture"
+    id: ch6_moisture
+    update_interval: 5min
+    lambda: |-
+      id(mux_s0).turn_off(); id(mux_s1).turn_on();
+      id(mux_s2).turn_on(); id(mux_s3).turn_off();
+      delay(10);
+      float raw = id(mux_adc).sample();
+      float pct = (2.80f - raw) / (2.80f - 1.50f) * 100.0f;
+      return clamp(pct, 0.0f, 100.0f);
+    unit_of_measurement: "%"
+    accuracy_decimals: 1
+    device_class: moisture
+    state_class: measurement
+
+  - platform: template
+    name: "${friendly_name} Wide Bougainvillea B Moisture"
+    id: ch7_moisture
+    update_interval: 5min
+    lambda: |-
+      id(mux_s0).turn_on(); id(mux_s1).turn_on();
+      id(mux_s2).turn_on(); id(mux_s3).turn_off();
+      delay(10);
+      float raw = id(mux_adc).sample();
+      float pct = (2.80f - raw) / (2.80f - 1.50f) * 100.0f;
+      return clamp(pct, 0.0f, 100.0f);
+    unit_of_measurement: "%"
+    accuracy_decimals: 1
+    device_class: moisture
+    state_class: measurement
+
+  - platform: template
+    name: "${friendly_name} Wide Bougainvillea C Moisture"
+    id: ch8_moisture
+    update_interval: 5min
+    lambda: |-
+      id(mux_s0).turn_off(); id(mux_s1).turn_off();
+      id(mux_s2).turn_off(); id(mux_s3).turn_on();
+      delay(10);
+      float raw = id(mux_adc).sample();
+      float pct = (2.80f - raw) / (2.80f - 1.50f) * 100.0f;
+      return clamp(pct, 0.0f, 100.0f);
+    unit_of_measurement: "%"
+    accuracy_decimals: 1
+    device_class: moisture
+    state_class: measurement
+
+  - platform: template
+    name: "${friendly_name} Wide Bougainvillea D Moisture"
+    id: ch9_moisture
+    update_interval: 5min
+    lambda: |-
+      id(mux_s0).turn_on(); id(mux_s1).turn_off();
+      id(mux_s2).turn_off(); id(mux_s3).turn_on();
+      delay(10);
+      float raw = id(mux_adc).sample();
+      float pct = (2.80f - raw) / (2.80f - 1.50f) * 100.0f;
+      return clamp(pct, 0.0f, 100.0f);
+    unit_of_measurement: "%"
+    accuracy_decimals: 1
+    device_class: moisture
+    state_class: measurement
