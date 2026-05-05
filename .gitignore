@@ -4,3 +4,14 @@ esphome/.esphome/
 __pycache__/
 *.pyc
 .DS_Store
+
+# Mosquitto runtime — passwd contains hashed credentials
+mosquitto/data/
+mosquitto/log/
+mosquitto/config/passwd
+
+# Home Assistant runtime — .storage contains tokens and user data
+homeassistant/config/.storage/
+homeassistant/config/secrets.yaml
+homeassistant/config/__pycache__/
+homeassistant/config/*.log

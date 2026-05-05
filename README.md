@@ -15,6 +15,7 @@ A locally-hosted DIY sensor network that monitors soil moisture across container
 - [Hardware Notes & Constraints](#hardware-notes--constraints)
 - [Wiring & Power](#wiring--power)
 - [ESPHome Configuration](#esphome-configuration)
+- [Server Setup (HA + MQTT)](#server-setup-ha--mqtt)
 - [Home Assistant Integration](#home-assistant-integration)
 - [Future Work](#future-work)
 
@@ -228,6 +229,20 @@ sensor:
 ```
 
 Then update the `calibrate_linear` filter min/max in the node's YAML.
+
+---
+
+## Server Setup (HA + MQTT)
+
+Home Assistant and Mosquitto run as Docker containers on the home desktop/server, managed by `compose.yaml` at the root of this repo. Full setup instructions, including Tailscale subnet routing, are in **[docs/server-setup.md](docs/server-setup.md)**.
+
+Quick start (after completing the one-time steps in that doc):
+
+```bash
+docker compose up -d
+```
+
+HA will be available at `http://localhost:8123`.
 
 ---
 
