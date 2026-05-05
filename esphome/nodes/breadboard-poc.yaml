@@ -29,9 +29,6 @@ web_server:
 
 sensor:
   # ── Sensor A ────────────────────────────────────────────────────────────────
-  # Replace the calibrate_linear values with your readings from breadboard-calibrate:
-  #   dry_voltage  = voltage in open air (should be ~2.5–3.0 V)
-  #   wet_voltage  = voltage submerged in water (should be ~1.2–1.8 V)
   - platform: adc
     pin: GPIO3   # D1 on XIAO ESP32C3
     name: "Sensor A Moisture"
@@ -42,8 +39,8 @@ sensor:
           window_size: 5
           send_every: 5
       - calibrate_linear:
-          - 2.80 -> 0.0    # ← replace with your dry_voltage for sensor A
-          - 1.50 -> 100.0  # ← replace with your wet_voltage for sensor A
+          - 2.848 -> 0.0
+          - 1.305 -> 100.0
       - clamp:
           min_value: 0.0
           max_value: 100.0
@@ -63,8 +60,8 @@ sensor:
           window_size: 5
           send_every: 5
       - calibrate_linear:
-          - 2.80 -> 0.0    # ← replace with your dry_voltage for sensor B
-          - 1.50 -> 100.0  # ← replace with your wet_voltage for sensor B
+          - 2.848 -> 0.0
+          - 1.297 -> 100.0
       - clamp:
           min_value: 0.0
           max_value: 100.0
