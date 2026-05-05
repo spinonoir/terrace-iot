@@ -27,6 +27,10 @@ wifi:
 captive_portal:
 logger:
 
+ota:
+  - platform: esphome
+    password: !secret ota_password
+
 # Web UI — no MQTT or Home Assistant needed for calibration
 web_server:
   port: 80

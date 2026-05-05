@@ -24,6 +24,10 @@ wifi:
 captive_portal:
 logger:
 
+ota:
+  - platform: esphome
+    password: !secret ota_password
+
 web_server:
   port: 80
 
