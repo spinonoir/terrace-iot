@@ -13,7 +13,7 @@ esphome:
   name: ${device_name}
 
 esp32:
-  board: esp32-c3-devkitm-1
+  board: seeed_xiao_esp32c3
   framework:
     type: arduino
 
@@ -33,7 +33,7 @@ web_server:
 
 sensor:
   - platform: adc
-    pin: GPIO1
+    pin: GPIO3   # D1 on XIAO ESP32C3
     name: "Sensor A Raw Voltage"
     attenuation: 12db
     update_interval: 2s
@@ -42,7 +42,7 @@ sensor:
     # No calibrate_linear filter here — we want the raw voltage
 
   - platform: adc
-    pin: GPIO2
+    pin: GPIO4   # D2 on XIAO ESP32C3
     name: "Sensor B Raw Voltage"
     attenuation: 12db
     update_interval: 2s

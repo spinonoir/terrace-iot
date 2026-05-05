@@ -10,7 +10,7 @@ esphome:
   friendly_name: Breadboard PoC
 
 esp32:
-  board: esp32-c3-devkitm-1
+  board: seeed_xiao_esp32c3
   framework:
     type: arduino
 
@@ -33,7 +33,7 @@ sensor:
   #   dry_voltage  = voltage in open air (should be ~2.5–3.0 V)
   #   wet_voltage  = voltage submerged in water (should be ~1.2–1.8 V)
   - platform: adc
-    pin: GPIO1
+    pin: GPIO3   # D1 on XIAO ESP32C3
     name: "Sensor A Moisture"
     attenuation: 12db
     update_interval: 5s
@@ -54,7 +54,7 @@ sensor:
 
   # ── Sensor B ────────────────────────────────────────────────────────────────
   - platform: adc
-    pin: GPIO2
+    pin: GPIO4   # D2 on XIAO ESP32C3
     name: "Sensor B Moisture"
     attenuation: 12db
     update_interval: 5s

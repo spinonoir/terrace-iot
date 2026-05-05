@@ -7,7 +7,7 @@ esphome:
   friendly_name: ${friendly_name}
 
 esp32:
-  board: esp32-c3-devkitm-1
+  board: seeed_xiao_esp32c3
   framework:
     type: arduino
 
@@ -20,7 +20,7 @@ deep_sleep:
 
 sensor:
   - platform: adc
-    pin: GPIO1
+    pin: GPIO3   # D1 on XIAO ESP32C3
     name: "${friendly_name} Zone 1 Moisture"
     id: moisture_zone_1
     attenuation: 12db
@@ -42,7 +42,7 @@ sensor:
     state_class: measurement
 
   - platform: adc
-    pin: GPIO2
+    pin: GPIO4   # D2 on XIAO ESP32C3
     name: "${friendly_name} Zone 2 Moisture"
     id: moisture_zone_2
     attenuation: 12db
@@ -64,7 +64,7 @@ sensor:
 
   # Battery voltage via 1:1 voltage divider (2× 100kΩ) bringing 4.2V → 2.1V
   - platform: adc
-    pin: GPIO3
+    pin: GPIO2   # D0 on XIAO ESP32C3
     name: "${friendly_name} Battery Voltage"
     attenuation: 12db
     update_interval: 10s
