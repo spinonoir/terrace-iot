@@ -130,10 +130,10 @@ Capacitive soil moisture sensors v1.2 include an onboard 5V→3.3V regulator for
 
 The ESP32's **ADC2** channels are multiplexed with the Wi-Fi radio and cannot be read reliably when Wi-Fi is active. **All analog sensors must connect to ADC1 pins only.**
 
-| MCU | Safe ADC1 Pins |
-|---|---|
-| ESP32-C3 | GPIO0, GPIO1, GPIO2, GPIO3, GPIO4 |
-| ESP32-S3 | GPIO1 – GPIO10 |
+| MCU | Board | Safe ADC1 Pins |
+|---|---|---|
+| ESP32-C3 | Seeed XIAO | D0/GPIO2, D1/GPIO3, D2/GPIO4 (GPIO0/1 not exposed; D3/GPIO5 is ADC2 — avoid) |
+| ESP32-S3 | — | GPIO1 – GPIO10 |
 
 ### Waterproofing
 
@@ -203,9 +203,17 @@ esphome/
 
 ### Setup
 
+This project uses [uv](https://docs.astral.sh/uv/) for Python dependency management. Install it once if you don't have it:
+
+```bash
+curl -LsSf https://astral.sh/uv/install.sh | sh
+```
+
+Then:
+
 1. Copy `secrets.yaml.template` to `esphome/secrets.yaml` and fill in your credentials.
-2. Install ESPHome: `pip install esphome`
-3. Flash a node: `esphome run esphome/nodes/apple-tree.yaml`
+2. Install dependencies: `uv sync`
+3. Flash a node: `uv run esphome run esphome/nodes/apple-tree.yaml`
 4. Subsequent updates are delivered OTA once the node is on Wi-Fi.
 
 ### Calibration
@@ -215,7 +223,7 @@ Each sensor needs wet/dry calibration. The raw ADC value at air (dry) and submer
 ```yaml
 sensor:
   - platform: adc
-    pin: GPIO1
+    pin: GPIO3   # D1 on XIAO ESP32C3
     raw: true  # add temporarily to read uncalibrated voltage
 ```
 

@@ -1,0 +1,8 @@
+[project]
+name = "terrace-iot"
+version = "0.1.0"
+description = "Terrace plant moisture monitoring — ESPHome firmware configs"
+requires-python = ">=3.9"
+dependencies = [
+    "esphome",
+]
